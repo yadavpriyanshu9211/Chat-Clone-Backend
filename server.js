@@ -4,6 +4,8 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
 import authRoutes from './routes/authRoutes.js';
+import chatRoutes from './routes/chatroutes.js';
+import { checkAuth } from "./middleware/auth.middle.js";
 
 dotenv.config();
 connectDB();
@@ -18,7 +20,10 @@ app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
-app.use('/api/v1/auth', authRoutes)
+app.use('/api/v1/auth', authRoutes);
+// Chat routes
+app.use('/api/v1/chat', checkAuth ,chatRoutes)
+
 const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
